@@ -110,9 +110,7 @@ export default class Home extends Component {
                           {listOfData.comments.map((comments, index) => {
                             return (
                               <span>
-                                {index + comments
-                                  ? index + 1 + ":" + comments
-                                  : "No comments yet"}
+                                {index + comments? index + 1 + ":" + comments: "No comments yet"}
                               </span>
                             );
                           })}
@@ -127,24 +125,20 @@ export default class Home extends Component {
                             {listOfData.lastModified}
                           </Moment>
                         </td>
-
                         <td>
                           <span
                             onClick={this.updateIdea.bind(this, listOfData.id)}
-                            className="glyphicon glyphicon-pencil"
-                          />
+                            className="glyphicon glyphicon-pencil"/>
                         </td>
                         <td>
                           <span
                             onClick={this.deleteIdea.bind(this, listOfData.id)}
-                            className="glyphicon glyphicon-remove"
-                          />
+                            className="glyphicon glyphicon-remove"/>
                         </td>
                         <td>
                           <span
                             className="glyphicon glyphicon-comment"
-                            onClick={this.addComment.bind(this, listOfData.id)}
-                          />
+                            onClick={this.addComment.bind(this, listOfData.id)}/>
                         </td>
                       </tr>
                     );

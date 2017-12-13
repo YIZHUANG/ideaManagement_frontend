@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import axios from "axios";
 import Home from "./components/home";
 import MemberList from "./components/memberList";
 import Add from "./components/add";

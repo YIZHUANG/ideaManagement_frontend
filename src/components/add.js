@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { createHashHistory } from "history";
 export const history = createHashHistory(); //import history for navigation.
-export default class Add extends Component {
 
+export default class Add extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,26 +29,31 @@ export default class Add extends Component {
       ideaOwnerid: event.target.value
     });
   }
+
   descriptionOnChange(event) {
     this.setState({
       description: event.target.value
     });
   }
+
   budgetOnChange(event) {
     this.setState({
       budget: event.target.value
     });
   }
+
   peopleNeededOnChange(event) {
     this.setState({
       peopleNeeded: event.target.value
     });
   }
+
   categoryOnChange(event) {
     this.setState({
       category: event.target.value
     });
   }
+
   isReadyForCommentsOnChange(event) {
     this.setState({
       isReadyForComments: event.target.value

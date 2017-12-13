@@ -3,7 +3,7 @@ import axios from "axios";
 import { HashRouter, Route, Router, Link } from "react-router-dom";
 import { createHashHistory } from "history"; //import history for navigation.
 export const history = createHashHistory();
-// Idea Detail Component
+
 export default class Edit extends Component {
   constructor(props) {
     super(props);
@@ -70,7 +70,7 @@ export default class Edit extends Component {
     this.getIdeaById();
   }
 
-  getIdeaById() {                 //get the list of ideas which we are editting.
+  getIdeaById() {                 //get the list of ideas of which we are editting.
     var self = this;
     axios
       .get("http://localhost:8000/listData/" + this.props.match.params.id)
@@ -105,7 +105,7 @@ export default class Edit extends Component {
         peopleNeeded: this.state.peopleNeeded,
         categoryid: this.state.category,
         isReadyForComments: this.state.isReadyForComments,
-        memberid: this.state.memberid   //even memberid does not belong to the idea table, but the cool thing is
+        memberid: this.state.memberid   //even though memberid does not belong to the idea table, but the cool thing is
       })                               //we have onUpdate('CASCADE') defined in the schema,so this will trigger another
       .then(this.props.history.push("/"))     //post request in the back-end to set the owner of this idea.
       .catch(function(error) {

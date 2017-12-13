@@ -28,10 +28,10 @@ export default class MemberList extends Component {
   render() {
     return (
       <div className="container">
-        <div class="header clearfix">
+        <div className="header clearfix">
           <nav>
-            <ul class="nav nav-pills pull-right">
-              <li role="presentation" class="active">
+            <ul className="nav nav-pills pull-right">
+              <li role="presentation" className="active">
                 <Link to="/">Home</Link>
               </li>
               <li role="presentation">
@@ -42,7 +42,7 @@ export default class MemberList extends Component {
               </li>
             </ul>
           </nav>
-          <h3 class="text-muted">Members management</h3>
+          <h3 className="text-muted">Members management</h3>
         </div>
         <div className="row">
           <div className="col-sm-4" />
