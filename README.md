@@ -29,7 +29,7 @@ edit.js: same as above.
 ```
 Functions:
 display a list of data.
-add data. (the cool part, when you add data, it will trigger another add data request automatically)
-edit the data. (the cool part, when you edit data, it will trigger another edit data request automatically)
-delete the data.(Associated will be deleted as well due to back-end set-up onDelete('CASCADE'))
+add data. (when you add data, it will trigger another add data request automatically)
+edit the data. (when you edit data, it will trigger another edit data request automatically)
+delete the data.(Associated rows from other tables will be deleted as well due to back-end set-up onDelete('CASCADE'))
 ```

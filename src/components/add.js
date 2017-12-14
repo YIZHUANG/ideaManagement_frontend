@@ -13,52 +13,48 @@ export default class Add extends Component {
       budget: "",
       peopleNeeded: "",
       category: "",
-      isReadyForComments: null,
-      newIdeaId: ""
+      isReadyForComments: false,
+      newIdeaId: "",
+      categories: []
     };
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  ideaTitleOnchange(event) {
+  // Updates the state when input field changes
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
     this.setState({
-      ideaTitle: event.target.value
+      [name]: value
     });
   }
 
-  ideaOwnerOnchange(event) {
-    this.setState({
-      ideaOwnerid: event.target.value
-    });
+  // Get request to get categories
+  componentWillMount() {
+    axios
+      .get("/category")
+      .then(res => {
+        this.setState({
+          categories: res.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  descriptionOnChange(event) {
-    this.setState({
-      description: event.target.value
-    });
-  }
+  // Map category names
+  renderCategory = (elem, index) => (
+    <option key={index} value={elem.id}>
+      {elem.name}
+    </option>
+  );
 
-  budgetOnChange(event) {
-    this.setState({
-      budget: event.target.value
-    });
-  }
-
-  peopleNeededOnChange(event) {
-    this.setState({
-      peopleNeeded: event.target.value
-    });
-  }
-
-  categoryOnChange(event) {
-    this.setState({
-      category: event.target.value
-    });
-  }
-
-  isReadyForCommentsOnChange(event) {
-    this.setState({
-      isReadyForComments: event.target.value
-    });
-  }
+  // Render all category names on list
+  renderCategories = () => {
+    return this.state.categories.map(this.renderCategory);
+  };
 
   addIdea() {
     axios
@@ -70,7 +66,7 @@ export default class Add extends Component {
         categoryid: this.state.category,
         isReadyForComments: this.state.isReadyForComments,
         memberid: this.state.ideaOwnerid //memberId belongs to a different table,but the backend can redirect it to be insertd as well.
-      })                                    //cool,right?
+      }) //cool,right?
       .then(this.props.history.push("/"))
       .catch(function(error) {
         console.log(error);
@@ -84,47 +80,57 @@ export default class Add extends Component {
         <input
           type="text"
           value={this.state.ideaTitle}
-          onChange={this.ideaTitleOnchange.bind(this)}
+          name="ideaTitle"
+          onChange={this.handleInputChange}
         />
         <br />
         <label>Idea owner:</label>
         <input
+          type="text"
+          name="ideaOwnerid"
           value={this.state.ideaOwnerid}
-          onChange={this.ideaOwnerOnchange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>Description:</label>
         <input
+          type="text"
+          name="description"
           value={this.state.description}
-          onChange={this.descriptionOnChange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>Budget:</label>
         <input
+          name="budget"
+          type="number"
           value={this.state.budget}
-          onChange={this.budgetOnChange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>
           PeopleNeeded:
           <input
+            name="peopleNeeded"
+            type="number"
             value={this.state.peopleNeeded}
-            onChange={this.peopleNeededOnChange.bind(this)}
+            onChange={this.handleInputChange}
           />
         </label>
         <br />
         <label>
           Category:
-          <input
-            value={this.state.category}
-            onChange={this.categoryOnChange.bind(this)}
-          />
+          <select name="category" onChange={this.handleInputChange}>
+            {this.renderCategories()}
+          </select>
         </label>
         <br />
         <label>IsReadyForComments:</label>
         <input
+          type="checkbox"
+          name="isReadyForComments"
           value={this.state.isReadyForComments}
-          onChange={this.isReadyForCommentsOnChange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <input type="submit" value="Submit" onClick={this.addIdea.bind(this)} />

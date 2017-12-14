@@ -16,44 +16,20 @@ export default class Edit extends Component {
       peopleNeeded: "",
       category: "",
       isReadyForComments: null,
-      listOfData: []
+      listOfData: [],
+      categories: []
     };
     this.getIdeaById = this.getIdeaById.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  ideaTitleOnchange(event) {
+  // Updates the state when input field changes
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
     this.setState({
-      ideaTitle: event.target.value
-    });
-  }
-
-  ideaOwnerOnchange(event) {
-    this.setState({
-      memberid: event.target.value
-    });
-  }
-
-  descriptionOnChange(event) {
-    this.setState({
-      description: event.target.value
-    });
-  }
-
-  budgetOnChange(event) {
-    this.setState({
-      budget: event.target.value
-    });
-  }
-
-  peopleNeededOnChange(event) {
-    this.setState({
-      peopleNeeded: event.target.value
-    });
-  }
-
-  categoryOnChange(event) {
-    this.setState({
-      category: event.target.value
+      [name]: value
     });
   }
 
@@ -70,7 +46,21 @@ export default class Edit extends Component {
     this.getIdeaById();
   }
 
-  getIdeaById() {                 //get the list of ideas of which we are editting.
+  componentWillMount() {      // Get request to get categories
+    axios
+      .get("/category")
+      .then(res => {
+        this.setState({
+          categories: res.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  getIdeaById() {
+    //get the list of ideas of which we are editting.
     var self = this;
     axios
       .get("http://localhost:8000/listData/" + this.props.match.params.id)
@@ -80,10 +70,13 @@ export default class Edit extends Component {
         });
       })
       .then(this.updateInput.bind(this))
-      .catch(error => {});
+      .catch(error => {
+        console.log(error);
+      });
   }
 
-  updateInput() {     //set the input value to the data we receive,which is the list of ideas we are modifying.
+  updateInput() {
+    //set the input value to the data we receive,which is the list of ideas we are modifying.
     this.setState({
       ideaTitle: this.state.listOfData[0].title,
       description: this.state.listOfData[0].description,
@@ -105,13 +98,25 @@ export default class Edit extends Component {
         peopleNeeded: this.state.peopleNeeded,
         categoryid: this.state.category,
         isReadyForComments: this.state.isReadyForComments,
-        memberid: this.state.memberid   //even though memberid does not belong to the idea table, but the cool thing is
-      })                               //we have onUpdate('CASCADE') defined in the schema,so this will trigger another
-      .then(this.props.history.push("/"))     //post request in the back-end to set the owner of this idea.
+        memberid: this.state.memberid //even though memberid does not belong to the idea table, but the cool thing is
+      }) //we have onUpdate('CASCADE') defined in the schema,so this will trigger another
+      .then(this.props.history.push("/")) //post request in the back-end to set the owner of this idea.
       .catch(function(error) {
         console.log(error);
       });
   }
+
+  // Map category names
+  renderCategory = (elem, index) => (
+    <option key={index} value={elem.id}>
+      {elem.name}
+    </option>
+  );
+
+  // Render all category names on list
+  renderCategories = () => {
+    return this.state.categories.map(this.renderCategory);
+  };
 
   render() {
     return (
@@ -119,46 +124,55 @@ export default class Edit extends Component {
         <label>Idea title:</label>
         <input
           type="text"
+          name="ideaTitle"
           value={this.state.ideaTitle}
-          onChange={this.ideaTitleOnchange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>Idea owner:</label>
         <input
+          type="number"
+          name="memberid"
           value={this.state.memberid}
-          onChange={this.ideaOwnerOnchange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>Description:</label>
         <input
+          type="text"
+          name="description"
           value={this.state.description}
-          onChange={this.descriptionOnChange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>Budget:</label>
         <input
+          type="number"
+          name="budget"
           value={this.state.budget}
-          onChange={this.budgetOnChange.bind(this)}
+          onChange={this.handleInputChange}
         />
         <br />
         <label>
           PeopleNeeded:
           <input
+            type="number"
+            name="peopleNeeded"
             value={this.state.peopleNeeded}
-            onChange={this.peopleNeededOnChange.bind(this)}
+            onChange={this.handleInputChange}
           />
         </label>
         <br />
         <label>
           Category:
-          <input
-            value={this.state.category}
-            onChange={this.categoryOnChange.bind(this)}
-          />
+          <select name="category" onChange={this.handleInputChange}>
+            {this.renderCategories()}
+          </select>
         </label>
         <br />
         <label>IsReadyForComments:</label>
         <input
+          name="isReadyForComments"
           value={this.state.isReadyForComments}
           onChange={this.isReadyForCommentsOnChange.bind(this)}
         />
