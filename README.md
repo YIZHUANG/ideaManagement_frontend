@@ -1,7 +1,5 @@
 This is the front-end for my project https://github.com/YIZHUANG/ideaManagement_backend_knex_nodejs
 
-Build by YI ZHUANG.  // 05.12/2017
-
 Build with ReactJs as front-end.
 Node.js, Knex as back-end, and postgresql as the database.
 
