@@ -42,7 +42,7 @@ export default class Add extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+    }
 
   // Map category names
   renderCategory = (elem, index) => (
@@ -63,15 +63,15 @@ export default class Add extends Component {
         description: this.state.description,
         budget: this.state.budget,
         peopleNeeded: this.state.peopleNeeded,
-        categoryid: this.state.category,
-        isReadyForComments: this.state.isReadyForComments,
+        categoryid: this.state.category || "1", //default categoryid is 1
+        isReadyForComments: this.state.isReadyForComments || false, //default categoryid is false
         memberid: this.state.ideaOwnerid //memberId belongs to a different table,but the backend can redirect it to be insertd as well.
       }) //cool,right?
       .then(this.props.history.push("/"))
       .catch(function(error) {
         console.log(error);
       });
-  }
+    }
 
   render() {
     return (
